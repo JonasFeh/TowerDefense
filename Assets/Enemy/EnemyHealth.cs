@@ -16,7 +16,7 @@ public class EnemyHealth : MonoBehaviour
 
     void OnEnable()
     {
-        currentHitPoints = maxHitPoints;        
+        currentHitPoints = maxHitPoints;
     }
 
     void Start()
@@ -24,16 +24,16 @@ public class EnemyHealth : MonoBehaviour
         enemy = GetComponent<Enemy>();
     }
 
-    void OnParticleCollision(GameObject other) 
+    void OnParticleCollision(GameObject other)
     {
         ProcessHit();
     }
 
-    void ProcessHit() 
+    void ProcessHit()
     {
         currentHitPoints--;
 
-        if(currentHitPoints <= 0)
+        if (currentHitPoints <= 0)
         {
             gameObject.SetActive(false);
             maxHitPoints += difficultyRamp;
