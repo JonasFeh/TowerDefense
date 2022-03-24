@@ -6679,8 +6679,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ea4a9ce486c34094ea65d750a55b2e5b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemyPrefab: {fileID: 5040643765344069697, guid: b940df629b09f434dbb9fd487257db6c, type: 3}
-  poolSize: 10
+  enemyPrefab: {fileID: 1805675758455309578, guid: bf59ed460e3bdf649ba05bcbc5d81977, type: 3}
+  poolSize: 2
   spawnTimer: 1
 --- !u!4 &801868352
 Transform:
@@ -6690,7 +6690,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 801868350}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 65.55945, y: -96.94966, z: 48.82216}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}

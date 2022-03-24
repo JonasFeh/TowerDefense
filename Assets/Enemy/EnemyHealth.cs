@@ -1,22 +1,27 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(Enemy))]
 public class EnemyHealth : MonoBehaviour
 {
-    [SerializeField] int maxHitPoints = 5;
+    [SerializeField] int maxHealth = 5;
 
-    [Tooltip("Adds amount to maxHitPoints when enemy dies.")]
+    [Tooltip("Adds amount to maxHealth when enemy dies.")]
     [SerializeField] int difficultyRamp = 1;
 
-    int currentHitPoints = 0;
+    public event Action<float> OnHealthPctChanged = delegate { };
+    public event Action ResetHealthPctOnSpawn = delegate { };
+
+    int currentHealth = 0;
     Enemy enemy;
 
 
     void OnEnable()
     {
-        currentHitPoints = maxHitPoints;
+        currentHealth = maxHealth;
+        ResetHealthPctOnSpawn.Invoke();
     }
 
     void Start()
@@ -31,13 +36,20 @@ public class EnemyHealth : MonoBehaviour
 
     void ProcessHit()
     {
-        currentHitPoints--;
-
-        if (currentHitPoints <= 0)
+        ModifyHealth(-1);
+        if (currentHealth <= 0)
         {
             gameObject.SetActive(false);
-            maxHitPoints += difficultyRamp;
+            maxHealth += difficultyRamp;
             enemy.RewardGold();
         }
+    }
+
+    public void ModifyHealth(int Amount)
+    {
+        currentHealth += Amount;
+
+        var currentHealthPercentage = (float)currentHealth / (float)maxHealth;
+        OnHealthPctChanged.Invoke(currentHealthPercentage);
     }
 }
