@@ -7,25 +7,16 @@ public class HealthBar : MonoBehaviour
 {
     [SerializeField]
     private Image foregroundImage;
-
     [SerializeField]
     private float updateSpeedSeconds = 0.5f;
+    [SerializeField]
+    private float positionOffset;
 
-    private void Awake()
-    {
-        var EnemyHealth = GetComponentInParent<EnemyHealth>();
-        EnemyHealth.OnHealthPctChanged += HandleHealthChanged;
-        EnemyHealth.ResetHealthPctOnSpawn += ResetHealthBar;
-    }
+    private EnemyHealth health;
 
     private void HandleHealthChanged(float pct)
     {
         StartCoroutine(ChangeToPct(pct));
-    }
-
-    private void ResetHealthBar()
-    {
-        foregroundImage.fillAmount = 1.0f;
     }
 
     private IEnumerator ChangeToPct(float pct)
@@ -40,6 +31,23 @@ public class HealthBar : MonoBehaviour
         }
 
         foregroundImage.fillAmount = pct;
+    }
 
+    internal void SetHealth(EnemyHealth Health)
+    {
+        foregroundImage.fillAmount = 1.0f;
+        health = Health;
+        Health.OnHealthPctChanged += HandleHealthChanged;
+
+    }
+
+    private void LateUpdate()
+    {
+        transform.position = Camera.main.WorldToScreenPoint(health.transform.position + Vector3.up * positionOffset);
+    }
+
+    private void OnDestroy()
+    {
+        health.OnHealthPctChanged -= HandleHealthChanged;
     }
 }

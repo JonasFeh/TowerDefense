@@ -11,17 +11,19 @@ public class EnemyHealth : MonoBehaviour
     [Tooltip("Adds amount to maxHealth when enemy dies.")]
     [SerializeField] int difficultyRamp = 1;
 
-    public event Action<float> OnHealthPctChanged = delegate { };
-    public event Action ResetHealthPctOnSpawn = delegate { };
+    public static event Action<EnemyHealth> OnHealthAdded = delegate { };
+    public static event Action<EnemyHealth> OnHealthRemoved = delegate { };
 
-    int currentHealth = 0;
+    public int CurrentHealth { get; private set; }
+
+    public event Action<float> OnHealthPctChanged = delegate { };
     Enemy enemy;
 
 
     void OnEnable()
     {
-        currentHealth = maxHealth;
-        ResetHealthPctOnSpawn.Invoke();
+        CurrentHealth = maxHealth;
+        OnHealthAdded?.Invoke(this);
     }
 
     void Start()
@@ -37,19 +39,24 @@ public class EnemyHealth : MonoBehaviour
     void ProcessHit()
     {
         ModifyHealth(-1);
-        if (currentHealth <= 0)
+        if (CurrentHealth <= 0)
         {
             gameObject.SetActive(false);
-            maxHealth += difficultyRamp;
             enemy.RewardGold();
+            maxHealth += difficultyRamp;
         }
     }
 
     public void ModifyHealth(int Amount)
     {
-        currentHealth += Amount;
+        CurrentHealth += Amount;
 
-        var currentHealthPercentage = (float)currentHealth / (float)maxHealth;
-        OnHealthPctChanged.Invoke(currentHealthPercentage);
+        var currentHealthPercentage = (float)CurrentHealth / (float)maxHealth;
+        OnHealthPctChanged?.Invoke(currentHealthPercentage);
+    }
+
+    private void OnDisable()
+    {
+        OnHealthRemoved?.Invoke(this);
     }
 }
