@@ -13,27 +13,24 @@ public class CameraController : MonoBehaviour
     [SerializeField] public float minScrollDistance = 10f;
     private const int SCROLL_SPEED_COMPENSATION = 1000;
 
-
-
-    // Update is called once per frame
     void Update()
     {
         // forward
-        var aMultiplicator = GetKeyAndMousCombined("w");
+        var aMultiplicator = GetKeyAndMouseCombined("w");
         if (aMultiplicator > 0)
         {
             transform.Translate(Vector3.forward * panSpeed * Time.deltaTime * aMultiplicator, Space.World);
         }
 
         // left
-        aMultiplicator = GetKeyAndMousCombined("a");
+        aMultiplicator = GetKeyAndMouseCombined("a");
         if (aMultiplicator > 0)
         {
             transform.Translate(Vector3.left * panSpeed * Time.deltaTime * aMultiplicator, Space.World);
         }
 
         // backward
-        aMultiplicator = GetKeyAndMousCombined("s");
+        aMultiplicator = GetKeyAndMouseCombined("s");
         if (aMultiplicator > 0)
             if (Input.GetKey("s") || Input.mousePosition.y <= panBorderThickness)
             {
@@ -41,7 +38,7 @@ public class CameraController : MonoBehaviour
             }
 
         // right
-        aMultiplicator = GetKeyAndMousCombined("d");
+        aMultiplicator = GetKeyAndMouseCombined("d");
         if (aMultiplicator > 0)
             if (Input.GetKey("d") || Input.mousePosition.x >= Screen.width - panBorderThickness)
             {
@@ -56,7 +53,7 @@ public class CameraController : MonoBehaviour
 
         transform.position = aPosition;
     }
-    private int GetKeyAndMousCombined(string theKey)
+    private int GetKeyAndMouseCombined(string theKey)
     {
         switch (theKey)
         {
