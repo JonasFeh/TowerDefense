@@ -12,11 +12,27 @@ public class HealthBar : MonoBehaviour
     [SerializeField]
     private float positionOffset;
 
+    [SerializeField]
+    private float minHealthBarHeight = 1.0f;
+    [SerializeField]
+    private float maxHealthBarHeight = 2.0f;
+    [SerializeField]
+    private float minHealthBarWidth = 1.0f;
+    [SerializeField]
+    private float maxHealthBarWidth = 2.0f;
+
     private EnemyHealth health;
+
+    CameraController cameraController;
 
     private void HandleHealthChanged(float pct)
     {
         StartCoroutine(ChangeToPct(pct));
+    }
+
+    private void Awake()
+    {
+        cameraController = FindObjectOfType<CameraController>();
     }
 
     private IEnumerator ChangeToPct(float pct)
@@ -44,6 +60,21 @@ public class HealthBar : MonoBehaviour
     private void LateUpdate()
     {
         transform.position = Camera.main.WorldToScreenPoint(health.transform.position + Vector3.up * positionOffset);
+        transform.localScale = new Vector3(mapScaleFactor(minHealthBarWidth, maxHealthBarWidth), mapScaleFactor(minHealthBarHeight, maxHealthBarHeight), 1.0f);
+    }
+
+    /// <summary>
+    /// Remapping the value to a scale factor for the healthbar.
+    /// </summary>
+    /// <param name="minValue"></param>
+    /// <param name="maxValue"></param>
+    /// <param name="currentValue"></param>
+    private float mapScaleFactor(float minValue, float maxValue)
+    {
+        var CameraRangeMin = cameraController.maxScrollDistance;
+        var CameraRangeMax = cameraController.minScrollDistance;
+        var CameraCurrentDistance = cameraController.transform.position.y;
+        return minValue + (CameraCurrentDistance - CameraRangeMin) * (maxValue - minValue) / (CameraRangeMax - CameraRangeMin);
     }
 
     private void OnDestroy()

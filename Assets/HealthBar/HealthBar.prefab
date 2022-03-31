@@ -53,6 +53,10 @@ MonoBehaviour:
   foregroundImage: {fileID: 8495388691251472993}
   updateSpeedSeconds: 0.1
   positionOffset: 0
+  minHealthBarHeight: 1
+  maxHealthBarHeight: 1.5
+  minHealthBarWidth: 1
+  maxHealthBarWidth: 2.2
 --- !u!1 &5968442912504570644
 GameObject:
   m_ObjectHideFlags: 0

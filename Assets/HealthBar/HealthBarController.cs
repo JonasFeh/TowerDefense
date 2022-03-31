@@ -10,15 +10,18 @@ public class HealthBarController : MonoBehaviour
 
     private Dictionary<EnemyHealth, HealthBar> healthBars = new Dictionary<EnemyHealth, HealthBar>();
 
+    private CameraController cameraController;
+
     private void Awake()
     {
+        cameraController = FindObjectOfType<CameraController>();
         EnemyHealth.OnHealthAdded += AddHealthBar;
         EnemyHealth.OnHealthRemoved += RemoveHealthBar;
     }
 
     private void AddHealthBar(EnemyHealth Health)
     {
-        if(!healthBars.ContainsKey(Health))
+        if (!healthBars.ContainsKey(Health))
         {
             var HealthBar = Instantiate(healthBarPrefab, transform);
             healthBars.Add(Health, HealthBar);
